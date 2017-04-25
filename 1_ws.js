@@ -24,13 +24,29 @@
 //
 //---------------------------------------------------------------
 var io = require('socket.io').listen(5000);
+var i,j;
+var board = new Array(8);
+//array of arrays (2D array)
+for(i = 0; i<8; i++){
+    board[i] = new Array(8);
+}
+var count = 0;
+//need double for loop to fill each position with a checker piece object
+for(i=0;i<8;i++){
+    for(j=0;j<8;j++){
+        board[i][j] = count;
+        count++;
+    }
+}
+
+//emit the table
 
 io.sockets.on('connection', function(socket) {
   socket.on('myEvent', function(content) {
     console.log(content); 
     socket.emit('server', "This is the server: got your message");
       if(content % 2 ==0 ){
-          socket.emit('server', content + " is even");
+          socket.emit('server', board);
       }
       else{
           socket.emit('server',content + " is odd");
