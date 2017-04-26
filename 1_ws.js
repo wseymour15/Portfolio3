@@ -34,7 +34,15 @@ var count = 0;
 //need double for loop to fill each position with a checker piece object
 for(i=0;i<8;i++){
     for(j=0;j<8;j++){
-        board[i][j] = count;
+		
+		var piece = {color:0, king:0};
+		if(i < 3 && j%2 == 0){
+			piece.color = 1;
+		}
+		else if(i > 4 && j%2 != 0){
+			piece.color = 2;
+		}
+        board[i][j] = piece;
         count++;
     }
 }
