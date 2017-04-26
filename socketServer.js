@@ -30,20 +30,18 @@ var board = new Array(8);
 for(i = 0; i<8; i++){
     board[i] = new Array(8);
 }
-var count = 0;
+
 //need double for loop to fill each position with a checker piece object
 for(i=0;i<8;i++){
     for(j=0;j<8;j++){
-		
 		var piece = {color:0, king:0};
-		if(i < 3 && j%2 == 0){
+		if(i < 3 && j % 2 == 0){
 			piece.color = 1;
 		}
-		else if(i > 4 && j%2 != 0){
+		else if(i > 4 && j % 2 != 0){
 			piece.color = 2;
 		}
         board[i][j] = piece;
-        count++;
     }
 }
 
@@ -54,10 +52,10 @@ io.sockets.on('connection', function(socket) {
     console.log(content); 
     socket.emit('server', "This is the server: got your message");
       if(content % 2 ==0 ){
-          socket.emit('server', board);
+          io.sockets.emit('server', board);
       }
       else{
-          socket.emit('server',content + " is odd");
+          io.sockets.emit('server',content + " is odd");
       }
     var num = 3;
     var interval = setInterval( function() {
