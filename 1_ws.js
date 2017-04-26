@@ -26,6 +26,8 @@
 var io = require('socket.io').listen(5000);
 var i,j;
 var board = new Array(8);
+var members = new Array(2);
+var memCount = 0;
 //array of arrays (2D array)
 for(i = 0; i<8; i++){
     board[i] = new Array(8);
@@ -50,21 +52,22 @@ for(i=0;i<8;i++){
 //emit the table
 
 io.sockets.on('connection', function(socket) {
+	
+  socket.on('joinGame', function(content){
+	if(memCount < 2){
+		console.log("A player joined!");
+		members[memCount] = socket.id;
+		console.log(socket.id);
+		console.log(members[0], members[1]);
+		++memCount;
+	}		
+  });
+	
   socket.on('myEvent', function(content) {
     console.log(content); 
-    socket.emit('server', "This is the server: got your message");
-      if(content % 2 ==0 ){
-          socket.emit('server', board);
-      }
-      else{
-          socket.emit('server',content + " is odd");
-      }
-    var num = 3;
-    var interval = setInterval( function() {
-        socket.emit('server', num + ": message from server");
-        if (num-- == 0) { 
-          clearInterval(interval); // stops timer
-        }
-    }, 1000); // fire every 1 second
+    io.sockets.emit('server', "This is the server: got your message");
+          io.sockets.emit('server', board);
+    io.to(members[0]).emit('message', 'for your eyes only');
   });
+	
 });
