@@ -44,8 +44,12 @@
 				col = "F55252";
 			}
 			
+			if(piece.selected == 1){
+				col = "FFFF33";
+			}
+			
 		var im = "";
-		piece = data[i][j];
+		piece = board[i][j];
 		if(piece.color == 1){
             if(piece.king != 1){
 				im = "<img src='BlackPiece.png' alt='Black' />";
@@ -85,6 +89,7 @@ function clicks(data){
 		socket.emit('myEvent', data[this.getAttribute("data-x")][this.getAttribute("id")] );
      });
 }
+	
     
     
 </script>
