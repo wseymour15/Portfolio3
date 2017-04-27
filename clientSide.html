@@ -2,6 +2,7 @@
 <head>
 <!-- This is the websocket SERVER -->
 <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"> </script>
     
             <input type="button" id="continue" name="continue" value="Continue"/>
 
@@ -15,7 +16,7 @@
   var socket = io.connect('http://localhost:5000');
     
     document.getElementById("continue").onclick = function() {
-                                       socket.emit('myEvent', parseInt(Math.floor(Math.random()*100)));
+                                       socket.emit('myEvent', "hi");
                                        };
     
     
@@ -72,8 +73,14 @@ for(i = 0; i < 8; i++){
          a +="</tr>";
     } 
       elem.innerHTML = a; // append data that we got back
+      clicks(data);
   });
-    
+
+    function clicks(data){
+        $('#msg td').click(function() {   
+            socket.emit('myEvent', data[this.getAttribute("data-x")][this.getAttribute("id")] );
+        });
+    }
     
     
 </script>
