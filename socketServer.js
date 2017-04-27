@@ -63,9 +63,9 @@ io.sockets.on('connection', function(socket) {
 	
   socket.on('myEvent', function(content) {
     console.log(content); 
-    io.sockets.emit('server', "This is the server: got your message");
+    //io.sockets.emit('server', "This is the server: got your message");
     io.sockets.emit('server', board);
-    io.to(members[0]).emit('message', 'for your eyes only');
+    //io.to(members[0]).emit('message', 'for your eyes only');
   });
 	
 });

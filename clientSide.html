@@ -69,6 +69,7 @@
     } 
 	  
     elem.innerHTML = a; // append data that we got back
+      clicks(data);
   });
 	
   socket.on('message', function(data) {

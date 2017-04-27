@@ -36,7 +36,7 @@ server.on('request', function (req,res) {
 }); // end server on handler
 
 server.listen(4000);
-//console.log("hi");
+console.log("hi");
 //console.log("hi");
 //console.log("hi");
 //console.log("hi");
