@@ -1,0 +1,83 @@
+<html>
+<head>
+<!-- This is the websocket SERVER -->
+<script src="http://localhost:5000/socket.io/socket.io.js"></script>
+    
+            <input type="button" id="continue" name="continue" value="Continue"/>
+
+</head>
+<body>
+    
+    
+<div id="msg"></div> 
+<script>
+      // connect to WEBSOCKET server
+  var socket = io.connect('http://localhost:5000');
+    
+    document.getElementById("continue").onclick = function() {
+                                       socket.emit('myEvent', parseInt(Math.floor(Math.random()*100)));
+                                       };
+    
+    
+  // Attach event handler for event fired by server
+  socket.on('server', function(data) {
+     var elem = document.getElementById('msg'); 
+     console.log(data);
+	  //data = JSON.parse(data);
+      var i,j
+      var a = "";
+	  a += "<table border='1'>";
+	  //echo "<table border='1'>"; 
+	  for(i = 0; i < 8; i++){ 
+        a += "<tr>";
+        for(j = 0; j < 8; j++){
+			
+			var col = "";
+			if(i % 2 == 0 && j % 2 == 1){
+				col = "B7ADAD";
+			}
+			else if(i % 2 == 1 && j % 2 == 0){
+				col = "B7ADAD";
+			}
+			else{
+				col = "F55252";
+			}
+			
+		var im = "";
+		piece = data[i][j];
+		if(piece.color == 1){
+            if(piece.king != 1){
+				im = "<img src='BlackPiece.png' alt='Black' />";
+                }
+             else{
+                im = "<img src='BlackKing.png' alt='Black' />";
+             }
+		}
+		else if(piece.color == 2){
+       		if(piece.king != 1){
+				im = "<img src='RedPiece.png' alt='Red' />";
+            }
+            else{
+                im = "<img src='RedKing.png' alt='Red' />";
+            }
+		}
+        a +="<td width= '50' height= '50' bgcolor='"+ col +"' align='center' data-x = '" + i +"' id= '"+ j +"'>" + im +"</td>";
+     	} 
+//    echo "</tr>"; 
+      a +="</tr>";
+    } 
+	  
+    elem.innerHTML = a; // append data that we got back
+  });
+	
+  socket.on('message', function(data) {
+	 var elem = document.getElementById('msg');
+     console.log(data);
+     elem.innerHTML += "<br>" + data; // append data that we got back
+  });
+    
+    
+    
+</script>
+</body>
+</html>

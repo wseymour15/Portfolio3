@@ -32,20 +32,18 @@ var memCount = 0;
 for(i = 0; i<8; i++){
     board[i] = new Array(8);
 }
-var count = 0;
+
 //need double for loop to fill each position with a checker piece object
 for(i=0;i<8;i++){
     for(j=0;j<8;j++){
-		
 		var piece = {color:0, king:0};
-		if(i < 3 && j%2 == 0){
+		if(i < 3 && j % 2 == 0){
 			piece.color = 1;
 		}
-		else if(i > 4 && j%2 != 0){
+		else if(i > 4 && j % 2 != 0){
 			piece.color = 2;
 		}
         board[i][j] = piece;
-        count++;
     }
 }
 
@@ -66,7 +64,7 @@ io.sockets.on('connection', function(socket) {
   socket.on('myEvent', function(content) {
     console.log(content); 
     io.sockets.emit('server', "This is the server: got your message");
-          io.sockets.emit('server', board);
+    io.sockets.emit('server', board);
     io.to(members[0]).emit('message', 'for your eyes only');
   });
 	
