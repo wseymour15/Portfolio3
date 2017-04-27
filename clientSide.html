@@ -43,13 +43,12 @@
 			else{
 				col = "F55252";
 			}
-			
+			piece = data[i][j];
 			if(piece.selected == 1){
 				col = "FFFF33";
 			}
 			
 		var im = "";
-		piece = board[i][j];
 		if(piece.color == 1){
             if(piece.king != 1){
 				im = "<img src='BlackPiece.png' alt='Black' />";
