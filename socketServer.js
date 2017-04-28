@@ -111,6 +111,8 @@ io.sockets.on('connection', function(socket) {
 
 //Used to move a piece
 function swapPiece(){
+	makeKing();
+	
     game.board[game.moves[0].posY][game.moves[0].posX].selected = 0;
     var tempY =game.board[game.moves[0].posY][game.moves[0].posX].posY;
     var tempX = game.board[game.moves[0].posY][game.moves[0].posX].posX;
@@ -130,6 +132,9 @@ function swapPiece(){
         game.turn = 1;
          game.curMember = game.members[0];
     }
+	
+	makeKing();
+	
 	game.moves[0] = undefined;
 	game.moves[1] = undefined;
 	return;
@@ -214,3 +219,12 @@ function endGame(){
         }
         return 0;
     }
+
+function makeKing(){
+	if(game.moves[1].posY == 0 && game.moves[1].color == 2){
+		game.board[game.moves[0].posY][game.moves[0].posX].king = 1;
+	}
+	else if(game.moves[1].posY == 7 && game.moves[1].color == 1){
+		game.board[game.moves[0].posY][game.moves[0].posX].king = 1;
+	}
+}
