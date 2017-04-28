@@ -14,6 +14,7 @@
 <script>
       // connect to WEBSOCKET server
   var socket = io.connect('http://localhost:5000');
+     //socket.emit('joinGame', "hi");
     
     document.getElementById("continue").onclick = function() {
                                        socket.emit('myEvent', "hi");
