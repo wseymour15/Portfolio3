@@ -88,14 +88,16 @@ io.sockets.on('connection', function(socket) {
 		  console.log(mems[0], mems[1]);
 		  ++memCount;
 	   }
-      if((game == undefined || game.members[1] == undefined)){
+      if((mems[1] != undefined) && game == undefined){
         console.log("we created a game");
         game = {board: b, turn: 1, members: new Array(2), curMember : mems[0], moves: mv, blackCount: bC, redCount: rC};
         game.members[0] = mems[0];
         game.members[1] = mems[1];
       }
     console.log(content); 
-      getFirstClick(content, this);
+      if(game != undefined){
+        getFirstClick(content, this);
+      }
     io.sockets.emit('server', b);
     //io.to(members[0]).emit('message', 'for your eyes only');
   });
