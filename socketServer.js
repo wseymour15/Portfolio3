@@ -123,7 +123,7 @@ function swapPiece(){
     var tempY =game.board[game.moves[0].posY][game.moves[0].posX].posY;
     var tempX = game.board[game.moves[0].posY][game.moves[0].posX].posX;
     game.board[game.moves[0].posY][game.moves[0].posX].posY = game.moves[1].posY;
-   game.board[game.moves[0].posY][game.moves[0].posX].posX = game.moves[1].posX;
+	game.board[game.moves[0].posY][game.moves[0].posX].posX = game.moves[1].posX;
     game.board[game.moves[1].posY][game.moves[1].posX].posX = tempX;
     game.board[game.moves[1].posY][game.moves[1].posX].posY = tempY;
     
@@ -163,7 +163,10 @@ function endGame(){
             game.board[game.moves[0].posY][game.moves[0].posX].selected = 1;
         }
         else if(socket.id == game.curMember && game.moves[0] != undefined && game.moves[1] == undefined){
-            getSecondClick(piece);
+			if(kingFirstMoves(piece) == 0){
+				getSecondClick(piece);
+			}
+			//kingFirstMoves(piece);
         }
             return;
     }
@@ -222,3 +225,69 @@ function endGame(){
         }
         return 0;
     }
+
+function kingFirstMoves(piece){
+	var flag = 0;
+	if(game.board[game.moves[0].posY][game.moves[0].posX].king == 1){
+	if(game.turn == 2){
+       if(piece.color == 0 && game.moves[0].posY + 1 == piece.posY && (game.moves[0].posX - 1 == piece.posX || game.moves[0].posX + 1 == piece.posX)){
+                game.moves[1] = piece;
+                swapPiece();
+		   	flag = 1;
+            }
+            else if(piece.color == 0 && kingJump(piece)==1){
+                game.moves[1] = piece;
+                swapPiece();
+				flag = 1;
+            }
+        }
+        else{
+            if(piece.color == 0 && game.moves[0].posY - 1 == piece.posY && (game.moves[0].posX - 1 == piece.posX || game.moves[0].posX + 1 == piece.posX)){
+                game.moves[1] = piece;
+                swapPiece();
+				flag = 1;
+            }
+            else if(piece.color == 0 && kingJump(piece) == 1){
+                game.moves[1] = piece;
+                swapPiece();
+				flag = 1;
+            }
+        }
+	}
+	return flag;
+	
+}
+
+function kingJump(piece){
+		first = game.moves[0];
+        if(game.turn == 2){
+            if(first.posY+2 == piece.posY && first.posX-2 == piece.posX && game.board[first.posY+1][first.posX-1].color == 1){
+                game.board[first.posY+1][first.posX-1].color = 0;
+                game.blackCount--;
+                return 1;
+            }
+            else if (first.posY+2 == piece.posY && first.posX+2 == piece.posX && game.board[first.posY+1][first.posX+1].color == 1){
+                game.board[first.posY+1][first.posX+1].color = 0;
+                game.blackCount--;
+                return 1;
+            }
+        }
+        else{
+            if(first.posY-2 == piece.posY && first.posX-2 == piece.posX && game.board[first.posY-1][first.posX-1].color == 2){
+                game.board[first.posY-1][first.posX-1].color = 0;
+                game.redCount--;
+                return 1;
+            }
+            else if (first.posY-2 == piece.posY && first.posX+2 == piece.posX && game.board[first.posY-1][first.posX+1].color == 2
+                    ){
+                game.board[first.posY-1][first.posX+1].color = 0;
+                game.redCount--;
+                return 1;
+            }
+        }
+	
+        return 0;
+		
+		
+	
+}
