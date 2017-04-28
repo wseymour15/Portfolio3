@@ -88,14 +88,16 @@ io.sockets.on('connection', function(socket) {
 		  console.log(mems[0], mems[1]);
 		  ++memCount;
 	   }
-      if((game == undefined || game.members[1] == undefined)){
+      if((mems[1] != undefined) && game == undefined){
         console.log("we created a game");
         game = {board: b, turn: 1, members: new Array(2), curMember : mems[0], moves: mv, blackCount: bC, redCount: rC};
         game.members[0] = mems[0];
         game.members[1] = mems[1];
       }
     console.log(content); 
-      getFirstClick(content, this);
+      if(game != undefined){
+        getFirstClick(content, this);
+      }
     io.sockets.emit('server', b);
     //io.to(members[0]).emit('message', 'for your eyes only');
   });
@@ -111,9 +113,13 @@ io.sockets.on('connection', function(socket) {
 
 //Used to move a piece
 function swapPiece(){
-	makeKing();
-	
     game.board[game.moves[0].posY][game.moves[0].posX].selected = 0;
+    if(game.moves[1].posY == 7 && game.moves[0].color == 1){
+        game.board[game.moves[0].posY][game.moves[0].posX].king = 1;
+    }
+    else if(game.moves[1].posY == 0 && game.moves[0].color == 2){
+        game.board[game.moves[0].posY][game.moves[0].posX].king = 1;
+    }
     var tempY =game.board[game.moves[0].posY][game.moves[0].posX].posY;
     var tempX = game.board[game.moves[0].posY][game.moves[0].posX].posX;
     game.board[game.moves[0].posY][game.moves[0].posX].posY = game.moves[1].posY;
@@ -132,9 +138,6 @@ function swapPiece(){
         game.turn = 1;
          game.curMember = game.members[0];
     }
-	
-	makeKing();
-	
 	game.moves[0] = undefined;
 	game.moves[1] = undefined;
 	return;
@@ -219,12 +222,3 @@ function endGame(){
         }
         return 0;
     }
-
-function makeKing(){
-	if(game.moves[1].posY == 0 && game.moves[1].color == 2){
-		game.board[game.moves[0].posY][game.moves[0].posX].king = 1;
-	}
-	else if(game.moves[1].posY == 7 && game.moves[1].color == 1){
-		game.board[game.moves[0].posY][game.moves[0].posX].king = 1;
-	}
-}
