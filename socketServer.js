@@ -98,7 +98,17 @@ io.sockets.on('connection', function(socket) {
       if(game != undefined){
         getFirstClick(content, this);
       }
-    io.sockets.emit('server', b);
+      if(game != undefined && endGame() == 1){
+          io.sockets.emit('server', b);
+          io.sockets.emit('server', "Black wins");
+      }
+      else if(game != undefined && endGame() == 2){
+          io.sockets.emit('server', b);
+          io.sockets.emit('server', "Red wins");
+      }
+      else{
+        io.sockets.emit('server', b);
+      }
     //io.to(members[0]).emit('message', 'for your eyes only');
   });
 	
@@ -145,11 +155,16 @@ function swapPiece(){
 
 function endGame(){
 	if(game.redCount == 0){
+        
 		//black wins
+        return 1;
 	}
 	else if(game.blackCount == 0){
 		//red wins
+        return 2;
+        
 	}
+    return 0;
 }
 
     function getFirstClick(piece,socket){

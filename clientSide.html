@@ -23,6 +23,12 @@
     
   // Attach event handler for event fired by server
   socket.on('server', function(data) {
+      if(data == "Black wins" || data == "Red wins"){
+        var elem = document.getElementById('msg');
+        console.log(data);
+        elem.innerHTML += "<br>" + data;
+      }
+      else{
      var elem = document.getElementById('msg'); 
      console.log(data);
 	  //data = JSON.parse(data);
@@ -74,6 +80,7 @@
 	  
     elem.innerHTML = a; // append data that we got back
       clicks(data);
+      }
   });
 	
   socket.on('message', function(data) {
