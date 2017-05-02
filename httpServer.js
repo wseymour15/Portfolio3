@@ -1,7 +1,3 @@
-//---------------------------------------------------------------
-// The purpose is to serve a file!
-//---------------------------------------------------------------
-
 var util = require('util');
 var path = require('path');
 var http = require('http');
