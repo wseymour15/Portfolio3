@@ -11,6 +11,7 @@
     
     
 <div id="msg"></div> 
+<input type="button" id="quit" name="quit" value="Quit"/>
 <script>
       // connect to WEBSOCKET server
   var socket = io.connect('http://localhost:5000');
@@ -19,17 +20,23 @@
     document.getElementById("continue").onclick = function() {
                                        socket.emit('myEvent', "hi");
                                        };
+	document.getElementById("quit").onclick = function() {
+                                       socket.emit('endGame', "quitting");
+                                       };
     
     
   // Attach event handler for event fired by server
   socket.on('server', function(data) {
+	  var elem = document.getElementById('msg');
       if(data == "Black wins" || data == "Red wins"){
-        var elem = document.getElementById('msg');
         console.log(data);
         elem.innerHTML += "<br>" + data;
       }
+	  else if(data == "Someone Quit"){
+		  elem.innerHTML = data;
+		  location.reload();
+	  }
       else{
-     var elem = document.getElementById('msg'); 
      console.log(data);
 	  //data = JSON.parse(data);
       var i,j

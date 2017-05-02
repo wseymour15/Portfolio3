@@ -42,7 +42,6 @@ for(i = 0; i < 8; i++){
     b[i] = new Array(8);
 }
 
-//need double for loop to fill each position with a checker piece object
 for(i=0;i<8;i++){
     for(j=0;j<8;j++){
 		var piece = {color:0, king:0, selected:0, posX: j, posY: i};
@@ -62,6 +61,7 @@ for(i=0;i<8;i++){
     }
 }
 
+
 //emit the table
 
 io.sockets.on('connection', function(socket) {
@@ -80,6 +80,38 @@ io.sockets.on('connection', function(socket) {
     game.members[1] = mems[1];
 }
   });
+	
+    socket.on('endGame', function(content){
+		game = undefined;
+		b = new Array(8);
+		for(i = 0; i < 8; i++){
+			b[i] = new Array(8);
+		}
+		mems = new Array(2);
+		mv = new Array(2);
+		bC = 12;
+		rC = 12;
+		memCount = 0;
+		for(i=0;i<8;i++){
+    		for(j=0;j<8;j++){
+				var piece = {color:0, king:0, selected:0, posX: j, posY: i};
+				if(i < 3 && i != 1 && j % 2 == 0){
+					piece.color = 1;
+				}
+				else if(i < 3 && i == 1 && j % 2 != 0){
+					piece.color = 1;
+				}
+				else if(i > 4 && i != 6 && j % 2 != 0){
+					piece.color = 2;
+				}
+				else if(i > 4 && i == 6 && j % 2 == 0){
+					piece.color = 2;
+				}
+        		b[i][j] = piece;
+			}
+		}
+		io.sockets.emit('server', "Someone Quit");
+  	});
 	
   socket.on('myEvent', function(content) {
         if(memCount < 2 && mems[0] != socket.id){
